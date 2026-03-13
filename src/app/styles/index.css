@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 38 52% 88%; /* #F2E5D0*/
+    --foreground: 20 20% 10%;
+
+    --primary: 35 32% 34%; /* #725B3A */
+    --primary-foreground: 38 52% 98%;
+
+    --secundary: 36 97% 58%; /* #FCA72C */
+    --secundary-foreground: 35 32% 10%;
+
+    --muted: 38 30% 80%; /* #E9DCC9 */
+    --muted-foreground: 35 32% 10%;
+
+    --accent: 36 97% 58%; /* #FCA72C */
+    --accent-foreground: 35 32% 10%;
+
+    --border: 35 20% 75%; /* #C9B7A0 */
+    --input: 35 20% 75%; /* #C9B7A0 */
+    --ring: 35 32% 34%; /* #725B3A */
+
+    --card: 38 52% 92%; /* #F2E5D0 */
+    --card-foreground: 20 20% 10%;
+
+    --radius: 0.5rem
+  }
+  .dark {
+    --background: 35 30% 8%; /* #1A1A1A */
+    --foreground: 38 52% 95%;
+
+    --primary: 35 30% 50%;
+    --primary-foreground: 35 30% 5%;
+
+    --secundary: 36 80% 50%;
+    --secundary-foreground: 35 30% 5%;
+
+    --muted: 35 20% 15%;
+    --muted-foreground: 35 10% 65%; 
+
+    --accent: 36 80% 45%;
+    --accent-foreground: 38 52% 95%; 
+
+    --border: 35 20% 20%;
+    --input: 35 20% 20%;
+    --ring: 36 97% 58%;
+
+    --card: 35 30% 12%;
+    --card-foreground: 38 52% 95%;
+  }
+}
