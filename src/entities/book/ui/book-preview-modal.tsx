@@ -1,7 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useQuery } from "@tanstack/react-query";
 import { bookService } from "../../../entities/book/api/book.service";
-import { Button } from "../../../shared/ui/button";
 import { useNavigate } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus, Trash2 } from "lucide-react";
@@ -128,22 +127,21 @@ export function BookPreviewModal({ book, isOpen, onOpenChange }: Props) {
                                             )}
 
                                             <div className="flex gap-3">
-                                                <Button 
+                                                <button 
                                                     onClick={handleMoreDetails} 
                                                     className="flex-1 rounded-2xl h-12 bg-accent text-white font-bold hover:scale-[1.02] transition-transform"
                                                 >
                                                     Mais detalhes
-                                                </Button>
+                                                </button>
                                                 
-                                                <Button 
+                                                <button 
                                                     onClick={handleLibraryAction}
-                                                    variant={isSaved ? "destructive" : "outline"} 
                                                     className={`rounded-2xl h-12 transition-all duration-300 ${
                                                         !isSaved ? "border-secondary/30 text-secondary hover:bg-secondary/10 px-6" : "px-4"
                                                     }`}
                                                 >
                                                     {isSaved ? <Trash2 size={20} /> : <><Plus className="mr-2 h-4 w-4"/> Biblioteca</>}
-                                                </Button>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

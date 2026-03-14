@@ -1,36 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: all;
+}
 
+/* 
 @layer base {
   :root {
-    --background: 38 52% 88%; /* #F2E5D0*/
+    --background: 38 52% 88%; 
     --foreground: 20 20% 10%;
 
-    --primary: 35 32% 34%; /* #725B3A */
+    --primary: 35 32% 34%; 
     --primary-foreground: 38 52% 98%;
 
-    --secundary: 36 97% 58%; /* #FCA72C */
+    --secundary: 36 97% 58%; 
     --secundary-foreground: 35 32% 10%;
 
-    --muted: 38 30% 80%; /* #E9DCC9 */
+    --muted: 38 30% 80%; 
     --muted-foreground: 35 32% 10%;
 
-    --accent: 36 97% 58%; /* #FCA72C */
+    --accent: 36 97% 58%;
     --accent-foreground: 35 32% 10%;
 
-    --border: 35 20% 75%; /* #C9B7A0 */
-    --input: 35 20% 75%; /* #C9B7A0 */
-    --ring: 35 32% 34%; /* #725B3A */
+    --border: 35 20% 75%; 
+    --input: 35 20% 75%; 
+    --ring: 35 32% 34%; 
 
-    --card: 38 52% 92%; /* #F2E5D0 */
+    --card: 38 52% 92%;
     --card-foreground: 20 20% 10%;
 
     --radius: 0.5rem
   }
   .dark {
-    --background: 35 30% 8%; /* #1A1A1A */
+    --background: 35 30% 8%;
     --foreground: 38 52% 95%;
 
     --primary: 35 30% 50%;
@@ -52,4 +54,4 @@
     --card: 35 30% 12%;
     --card-foreground: 38 52% 95%;
   }
-}
+} */

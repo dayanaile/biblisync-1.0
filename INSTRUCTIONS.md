@@ -13,7 +13,7 @@ O projeto foi construído utilizando as ferramentas mais modernas do ecossistema
 * **Data Fetching:** TanStack Query v5 (Cache & Sync)
 * **State:** Zustand (Global store com persistência)
 * **Forms:** React Hook Form + Zod (Validação de esquemas)
-* **UI/UX:** TailwindCSS + Shadcn/UI + Framer Motion
+* **UI/UX:** TailwindCSS + DaisyUI + Framer Motion
 * **Testing:** Vitest + React Testing Library
 
 ---
@@ -48,7 +48,7 @@ O projeto utiliza Vitest como runner de testes por sua velocidade e integração
 **Roteamento:**	TanStack Router (File-based routing)
 **Data Fetching:**	TanStack Query v5
 **Estado Global:**	Zustand
-**Estilização:**	TailwindCSS + Shadcn/UI
+**Estilização:**	TailwindCSS + DaisyUI
 **Formulários:**	React Hook Form + Zod
 **Testes:**	Vitest + React Testing Library
 

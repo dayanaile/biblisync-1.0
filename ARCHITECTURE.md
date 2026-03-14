@@ -21,7 +21,7 @@ O projeto segue a arquitetura **FSD**, que organiza o código em camadas de resp
 | **Widgets** | Componentes complexos e autônomos (ex: Header, BookGrid). |
 | **Features** | Ações interativas do usuário (ex: SearchBar, AddToLibrary). |
 | **Entities** | Lógica de domínio, modelos de dados e APIs (ex: Book, User). |
-| **Shared** | Componentes de UI genéricos (Shadcn), hooks e utilitários. |
+| **Shared** | Componentes de hooks e utilitários. |
 
 ---
 

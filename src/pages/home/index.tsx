@@ -3,13 +3,11 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { bookService } from "../../entities/book/api/book.service";
 import { useFilterStore } from "../../shared/lib/store/use-filter-store";
-import { Skeleton } from "../../shared/ui/skeleton";
 import { bookKeys } from "../../entities/book/api/book.keys";
 import { BookCard } from "../../entities/book/ui/book-card";
 import { FeaturedBanner } from "../../shared/ui/feature-banner";
-import { Loader2, ArrowUp } from "lucide-react";
+import { ArrowUp, Sparkles, AlertCircle } from "lucide-react";
 import { BookFilters } from "../../shared/ui/book-filters";
-import { Button } from "../../shared/ui/button";
 
 export function HomePage() {
   const { selectedGenre, printType, orderBy } = useFilterStore();
@@ -64,32 +62,45 @@ export function HomePage() {
   };
 
   if (isError) return (
-    <div className="p-20 text-center flex flex-col items-center gap-4">
-      <p className="text-muted-foreground font-medium">Ops! Tivemos um problema ao conectar com a biblioteca.</p>
-      <Button variant="outline" onClick={() => window.location.reload()}>Tentar novamente</Button>
+    <div className="p-20 flex flex-col items-center justify-center gap-6">
+      <div className="alert alert-error max-w-md shadow-lg">
+        <AlertCircle />
+        <span>Ops! Tivemos um problema ao conectar com a biblioteca.</span>
+      </div>
+      <button className="btn btn-outline btn-primary px-8 rounded-full" onClick={() => window.location.reload()}>
+        Tentar novamente
+      </button>
     </div>
   );
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20 relative">
       
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
-        <h1 className="font-heading text-[2.8rem] md:text-[3.2rem] leading-[0.85] text-primary uppercase tracking-tighter">
-            {selectedGenre === "Todos" ? (
-              <>Popular <br /> Bestsellers</>
-            ) : (
-              <>Bestsellers <br /> <span className="text-secondary text-[0.8em]">de {selectedGenre}</span></>
-            )}
-        </h1>
+      {/* HEADER SECTION */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div className="space-y-2">
+            <div className="flex items-center gap-2 text-primary font-black uppercase tracking-[0.3em] text-[10px]">
+                <Sparkles size={14} />
+                <span>Explorar Estante</span>
+            </div>
+            <h1 className="font-heading text-[3rem] md:text-[4rem] leading-[0.8] text-base-content uppercase tracking-tighter">
+                {selectedGenre === "Todos" ? (
+                <>Popular <br /> <span className="text-primary">Bestsellers</span></>
+                ) : (
+                <>Bestsellers <br /> <span className="text-primary text-[0.8em]">de {selectedGenre}</span></>
+                )}
+            </h1>
+        </div>
         <BookFilters />
       </div>
 
+      {/* BANNER SECTION */}
       <div className="pb-12">
         {isLoading ? (
-          <Skeleton className="h-[320px] w-full rounded-[40px]" />
+          <div className="skeleton h-[350px] w-full rounded-[40px]"></div>
         ) : bannerBooks.length > 0 ? (
           <FeaturedBanner 
-                key={selectedGenre + printType + orderBy} // Força re-animação ao trocar filtros
+                key={selectedGenre + printType + orderBy}
                 books={bannerBooks} 
                 titlePrefix={selectedGenre === "Todos" ? "Novos" : "Destaques"} 
                 titleHighlight={selectedGenre === "Todos" ? "Lançamentos" : selectedGenre}
@@ -98,11 +109,16 @@ export function HomePage() {
         ) : null}
       </div>
 
-      <div className="bg-white dark:bg-card p-6 md:p-10 rounded-[40px] shadow-sm border border-border/40 relative">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+      {/* GRID SECTION */}
+      <div className="card bg-base-100 p-6 md:p-12 rounded-[40px] shadow-sm border border-base-200">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-20">
           {isLoading ? (
             Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} className="aspect-[2/3] w-full rounded-[32px]" />
+              <div key={i} className="flex flex-col gap-4 w-full">
+                <div className="skeleton aspect-[2/3] w-full rounded-[32px]"></div>
+                <div className="skeleton h-4 w-28"></div>
+                <div className="skeleton h-4 w-full"></div>
+              </div>
             ))
           ) : (
             <>
@@ -110,18 +126,19 @@ export function HomePage() {
                 <BookCard key={`${book.id}-${index}`} book={book} />
               ))}
               
-              <div ref={ref} className="col-span-full flex justify-center items-center p-12 mt-4 border-t border-dashed border-border/60">
+              {/* INFINITE SCROLL LOADER */}
+              <div ref={ref} className="col-span-full flex flex-col justify-center items-center p-16 mt-10 border-t border-dashed border-base-300">
                 {isFetchingNextPage ? (
-                  <div className="flex flex-col items-center gap-2">
-                    <Loader2 className="animate-spin text-secondary" size={32} />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-secondary">Buscando mais...</span>
+                  <div className="flex flex-col items-center gap-4">
+                    <span className="loading loading-spinner loading-lg text-primary"></span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Buscando tesouros...</span>
                   </div>
                 ) : hasNextPage ? (
-                  <div className="h-4 w-4 rounded-full bg-secondary animate-pulse" />
+                  <div className="h-2 w-2 rounded-full bg-primary animate-ping" />
                 ) : (
-                  <div className="flex flex-col items-center gap-1">
-                    <span className="text-2xl">✨</span>
-                    <span className="text-muted-foreground text-xs font-bold uppercase tracking-widest">Fim da estante</span>
+                  <div className="flex flex-col items-center gap-2 opacity-40">
+                    <span className="text-3xl">📚</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-base-content">Fim da estante alcançado</span>
                   </div>
                 )}
               </div>
@@ -130,14 +147,14 @@ export function HomePage() {
         </div>
       </div>
 
+      {/* FLOATING ACTION BUTTON */}
       {showScrollButton && (
-        <Button 
+        <button 
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 h-14 w-14 rounded-full shadow-2xl bg-primary hover:bg-secondary text-white z-50 animate-in zoom-in-50 duration-300"
-          size="icon"
+          className="btn btn-primary btn-circle fixed bottom-8 right-8 h-16 w-16 shadow-2xl z-50 animate-in zoom-in-50 duration-300"
         >
-          <ArrowUp size={24} />
-        </Button>
+          <ArrowUp size={28} className="text-white" />
+        </button>
       )}
     </div>
   );

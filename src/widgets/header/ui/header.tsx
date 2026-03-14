@@ -1,6 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "../../../shared/ui/avatar";
 import { useThemeStore } from "../../../shared/lib/store/use-theme-store";
-import { Button } from "../../../shared/ui/button";
 import { LibrarySearch } from "../../library-search/ui/library-search";
 import { useAuthStore } from "../../../entities/user/model/use-auth-store";
 import { useNavigate } from "@tanstack/react-router";
@@ -10,16 +8,10 @@ import {
     Sun,
     Moon,
     LogOut,
-    Settings 
+    Settings,
+    ChevronDown,
+    BookOpenText
 } from "lucide-react";
-import { 
-    DropdownMenu, 
-    DropdownMenuTrigger, 
-    DropdownMenuContent, 
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator 
-} from "../../../shared/ui/dropdown-menu";
 import biblioLogo from "../../../assets/biblioSync-logo.png";
 
 export function Header() {
@@ -33,73 +25,85 @@ export function Header() {
     };
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-white dark:bg-secondary border-transparent px-4">
-            <div className="container flex h-16 items-center justify-between gap-4">
+        <header className="sticky top-0 z-50 w-full border-b bg-base-100/80 backdrop-blur-md border-base-200 px-4">
+            <div className="container mx-auto flex h-16 items-center justify-between gap-4">
                 
-                <div className="flex items-center gap-2 font-bold text-xl tracking-tight cursor-pointer" onClick={() => navigate({ to: '/' })}>
-                    <img src={biblioLogo} alt="Logo" className="h-10 w-auto" />
+                {/* LOGO */}
+                <div 
+                    className="flex items-center gap-2 cursor-pointer transition-transform active:scale-95 shrink-0" 
+                    onClick={() => navigate({ to: '/' })}
+                >
+                    <><BookOpenText size={20} /> <span>BiblioSync</span></>
                 </div>
 
-                <div className="flex-1 flex justify-center px-10 h-10">
+                {/* BUSCA CENTRALIZADA */}
+                <div className="flex-1 max-w-xl hidden md:flex h-10">
                     <LibrarySearch 
-                        className="mb-0 max-w-none shadow-none h-10 rounded-lg bg-white dark:bg-card"
+                        className="mb-0 max-w-none shadow-none h-10 rounded-xl bg-base-200 focus-within:bg-base-100 transition-all border-transparent"
                     />
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <ThemeToggle/>
+                {/* AÇÕES DA DIREITA */}
+                <div className="flex items-center gap-2 md:gap-4">
+                    <ThemeToggle />
+
                     {isAuthenticated ? (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button className="relative h-10 w-10 rounded-full border-2 border-secondary/20 hover:border-secondary transition-all">
-                                    <Avatar className="h-10 w-10">
-                                        <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} alt={user?.name}/>
-                                        <AvatarFallback><User /></AvatarFallback>
-                                    </Avatar>
-                                </Button>
-                            </DropdownMenuTrigger>
+                        <div className="dropdown dropdown-end">
+                            {/* TRIGGER DO DROPDOWN */}
+                            <label tabIndex={0} className="btn btn-ghost btn-circle avatar border-2 border-base-200 hover:border-primary transition-all p-0 overflow-hidden">
+                                <div className="w-10 rounded-full">
+                                    <img 
+                                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} 
+                                        alt={user?.name || "User"} 
+                                    />
+                                </div>
+                            </label>
 
-                            <DropdownMenuContent align="end" className="w-64 p-2 mt-2 bg-white dark:bg-card border-border shadow-2xl rounded-2xl">
-                                <DropdownMenuLabel className="font-normal p-4">
-                                    <div className="flex flex-col space-y-1">
-                                        <p className="text-sm font-bold leading-none">{user?.name}</p>
-                                        <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
-                                    </div>
-                                </DropdownMenuLabel>
-                                <DropdownMenuSeparator className="bg-border/50"/>
-
-                                <DropdownMenuItem onClick={toggleTheme} className="cursor-pointer rounded-xl h-11">
-                                    {theme === 'light' ? (
-                                        <><Moon className="mr-2 h-4 w-4" /> <span>Modo Escuro</span></>
-                                    ) : (
-                                        <><Sun className="mr-2 h-4 w-4" /> <span>Modo Claro</span></>
-                                    )}
-                                </DropdownMenuItem>
+                            {/* CONTEÚDO DO DROPDOWN */}
+                            <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow-2xl menu menu-sm dropdown-content bg-base-100 rounded-[24px] w-64 border border-base-200">
+                                <div className="px-4 py-3 border-b border-base-200 mb-2">
+                                    <p className="text-sm font-black uppercase tracking-tight text-base-content">{user?.name}</p>
+                                    <p className="text-[10px] opacity-60 font-medium truncate">{user?.email}</p>
+                                </div>
                                 
-                                <DropdownMenuItem className="cursor-pointer rounded-xl h-11">
-                                    <Settings className="mr-2 h-4 w-4"/><span>Configurações</span>
-                                </DropdownMenuItem>
+                                <li>
+                                    <button onClick={toggleTheme} className="h-11 rounded-xl gap-3">
+                                        {theme === 'light' ? (
+                                            <><Moon size={16} /> <span>Modo Escuro</span></>
+                                        ) : (
+                                            <><Sun size={16} /> <span>Modo Claro</span></>
+                                        )}
+                                    </button>
+                                </li>
                                 
-                                <DropdownMenuSeparator className="bg-border/50"/>
+                                <li>
+                                    <button className="h-11 rounded-xl gap-3">
+                                        <Settings size={16} /> <span>Configurações</span>
+                                    </button>
+                                </li>
                                 
-                                <DropdownMenuItem 
-                                    onClick={handleLogout}
-                                    className="text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer rounded-xl h-11 font-bold"
-                                >
-                                    <LogOut className="mr-2 h-4 w-4"/><span>Sair do BiblioSync</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                                <div className="divider my-1 opacity-50"></div>
+                                
+                                <li>
+                                    <button 
+                                        onClick={handleLogout}
+                                        className="h-11 rounded-xl gap-3 text-error font-bold hover:bg-error/10"
+                                    >
+                                        <LogOut size={16} /> <span>Sair do BiblioSync</span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     ) : (
-                        <Button 
+                        <button 
                             onClick={() => navigate({ to: '/login' })}
-                            className="rounded-full px-8 bg-accent text-white hover:bg-secondary/90 shadow-lg shadow-secondary/20 transition-all active:scale-95"
+                            className="btn btn-primary btn-sm md:btn-md rounded-full px-8 text-white shadow-lg shadow-primary/20"
                         >
                             Login
-                        </Button>
+                        </button>
                     )}
                 </div>
             </div>
         </header>
-    )
+    );
 }

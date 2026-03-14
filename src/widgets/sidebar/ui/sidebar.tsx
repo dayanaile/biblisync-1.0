@@ -10,9 +10,8 @@ import {
     LayoutGrid
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "@tanstack/react-router";
-import { Button } from "../../../shared/ui/button";
 import { useAuthStore } from "../../../entities/user/model/use-auth-store";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const subMenuItems = [
     { label: "Todos", icon: LayoutGrid, status: undefined },
@@ -32,76 +31,71 @@ export function Sidebar() {
         navigate({ to: '/login' });
     };
 
-    const handleLibraryClick = () => {
-        setIsLibraryOpen(!isLibraryOpen);
-        navigate({ to: '/library', search: { status: undefined } });
-    };
-
     return (
-        <aside className="hidden md:flex w-64 border-r flex-col bg-white dark:bg-secondary border-transparent">
-            <div className="flex-1 py-6 px-4 space-y-1">
-                <Button variant="ghost" asChild className="w-full justify-start gap-3 hover:bg-input rounded-xl h-12 group">
-                    <Link to="/" activeProps={{className: "bg-card text-secondary shadow-sm"}}>
-                        <Home className="h-5 w-5 text-muted-foreground group-hover:text-secondary"/>
-                        <span className="font-medium">Início</span>
-                    </Link>
-                </Button>
+        <aside className="hidden md:flex w-64 border-r border-base-200 flex-col bg-base-100 shrink-0">
+            <div className="flex-1 py-8 px-4">
+                <ul className="menu menu-md w-full p-0 gap-2">
+                    {/* INÍCIO */}
+                    <li>
+                        <Link 
+                            to="/" 
+                            activeProps={{ className: "active" }}
+                            className="flex gap-4 font-bold rounded-xl h-12"
+                        >
+                            <Home size={20} />
+                            <span>Início</span>
+                        </Link>
+                    </li>
 
-                <div className="space-y-1">
-                    <Button 
-                        variant="ghost" 
-                        onClick={handleLibraryClick}
-                        className="w-full justify-between gap-3 hover:bg-input rounded-xl h-12 group"
-                    >
-                        <div className="flex items-center gap-3">
-                            <Library className={`h-5 w-5 transition-colors ${location.pathname.includes('library') ? 'text-secondary' : 'text-muted-foreground'} group-hover:text-secondary`}/>
-                            <span className={`font-medium ${location.pathname.includes('library') ? 'text-secondary' : 'text-white'}`}>Biblioteca</span>
-                        </div>
-                        <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isLibraryOpen ? '' : '-rotate-90'}`} />
-                    </Button>
+                    {/* BIBLIOTECA COM SUBMENU */}
+                    <li>
+                        <details open={isLibraryOpen} onToggle={(e) => setIsLibraryOpen(e.currentTarget.open)}>
+                            <summary className={`flex gap-4 font-bold rounded-xl h-12 ${location.pathname.includes('library') ? 'text-primary' : ''}`}>
+                                <Library size={20} />
+                                <span>Biblioteca</span>
+                            </summary>
+                            <ul className="mt-2 ml-4 gap-1 border-l-2 border-base-200">
+                                {subMenuItems.map((sub) => (
+                                    <li key={sub.label}>
+                                        <Link 
+                                            to="/library" 
+                                            search={{ status: sub.status }}
+                                            activeProps={{ className: "text-primary font-black bg-primary/5" }}
+                                            className="flex gap-3 rounded-lg h-10 text-sm opacity-80 hover:opacity-100"
+                                        >
+                                            <sub.icon size={16} />
+                                            {sub.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </details>
+                    </li>
 
-                    {isLibraryOpen && (
-                        <div className="pl-4 space-y-1">
-                            {subMenuItems.map((sub) => (
-                                <Button
-                                    key={sub.label}
-                                    variant="ghost"
-                                    asChild
-                                    className="w-full justify-start gap-3 hover:bg-input/50 rounded-xl h-10 group"
-                                >
-                                    <Link 
-                                        to="/library" 
-                                        search={{ status: sub.status }}
-                                        activeProps={{className: "text-[#FCA72C] font-bold bg-[#FCA72C]/5"}}
-                                        activeOptions={{ exact: true }}
-                                    >
-                                        <sub.icon className="h-4 w-4 text-muted-foreground group-hover:text-[#FCA72C]"/>
-                                        <span className="text-sm">{sub.label}</span>
-                                    </Link>
-                                </Button>
-                            ))}
-                        </div>
-                    )}
-                </div>
-
-                <Button variant="ghost" asChild className="w-full justify-start gap-3 hover:bg-input rounded-xl h-12 group">
-                    <Link to="/highlights" activeProps={{className: "bg-card text-secondary shadow-sm"}}>
-                        <Star className="h-5 w-5 text-muted-foreground group-hover:text-secondary"/>
-                        <span className="font-medium">Favoritos</span>
-                    </Link>
-                </Button>
+                    {/* FAVORITOS */}
+                    <li>
+                        <Link 
+                            to="/highlights" // Ajustado para condizer com o seu arquivo anterior
+                            activeProps={{ className: "active" }}
+                            className="flex gap-4 font-bold rounded-xl h-12"
+                        >
+                            <Star size={20} />
+                            <span>Favoritos</span>
+                        </Link>
+                    </li>
+                </ul>
             </div>
 
+            {/* BOTÃO DE LOGOUT */}
             {isAuthenticated && (
-                <div className="p-4 border-t border-border/40">
-                    <Button
+                <div className="p-4 mt-auto border-t border-base-200">
+                    <button
                         onClick={handleLogout}
-                        variant="ghost"
-                        className="w-full justify-start gap-3 text-destructive hover:text-white hover:bg-destructive transition-all rounded-xl h-12"
+                        className="btn btn-ghost w-full justify-start gap-4 text-error hover:bg-error/10 rounded-xl normal-case h-12"
                     >
-                        <LogOut className="h-5 w-5"/>
-                        <span className="font-medium">Sair da Conta</span>
-                    </Button>
+                        <LogOut size={20} />
+                        <span className="font-bold">Sair da Conta</span>
+                    </button>
                 </div>
             )}
         </aside>

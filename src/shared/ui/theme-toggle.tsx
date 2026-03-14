@@ -1,5 +1,4 @@
 import { Moon, Sun } from "lucide-react";
-import { Button } from "./button";
 import { useThemeStore } from "../lib/store/use-theme-store";
 import { motion } from "framer-motion";
 
@@ -7,9 +6,7 @@ export function ThemeToggle() {
   const { theme, toggleTheme } = useThemeStore();
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
+    <button
       onClick={toggleTheme}
       className="relative h-10 w-10 rounded-xl hover:bg-secondary/10 transition-colors"
     >
@@ -41,6 +38,6 @@ export function ThemeToggle() {
         </motion.div>
       </div>
       <span className="sr-only">Alternar tema</span>
-    </Button>
+    </button>
   );
 }
