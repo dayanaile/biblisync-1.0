@@ -6,6 +6,15 @@ module.exports = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["light", "dark"], 
-  },
+  themes: [
+    {
+      libris: {
+        "primary": "#FCA72C",
+        "base-100": "#ffffff", // Garante que o fundo seja branco
+        // ... restante das suas cores
+      },
+    },
+    "dark", // O dark vem depois
+  ],
+},
 }
